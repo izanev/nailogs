@@ -1,11 +1,11 @@
-@extends('layouts.base')
+@extends('layouts.front')
 
 @section('headcss')
 	@parent
 	<link href="{{ asset('assets/css/register.css') }}" rel="stylesheet">
 @stop
 
-@section('content')
+@section('content-inner')
 	<div class="container">
 		<!-- if there are login errors, show them here -->
 		@if (count($errors))

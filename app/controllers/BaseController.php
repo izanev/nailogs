@@ -15,4 +15,7 @@ class BaseController extends Controller {
 		}
 	}
 
+	public function getAuthorizeService() {
+		return \App::make('nai.authorizeService');
+	}
 }

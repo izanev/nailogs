@@ -12,8 +12,7 @@ class Create extends Migration {
 	 */
 	public function up()
 	{
-      Schema::create('users', function(Blueprint $table)
-      {
+      Schema::create('users', function(Blueprint $table) {
 			$table->increments('id');
 
 			$table->integer('role_id')->unsigned();
@@ -26,7 +25,7 @@ class Create extends Migration {
 			$table->rememberToken();
 			$table->timestamps();
 
-			$table->unique('role_id');
+			$table->unique('email');
       });
 
       Schema::create('roles', function(Blueprint $table)

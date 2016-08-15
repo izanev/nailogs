@@ -1,5 +1,9 @@
 @extends('layouts.base')
 
+@section('content-messages')
+	@include('partials.messages')
+@stop
+
 @section('headcss')
 	@parent
 	<link href="{{ asset('assets/css/admin.css') }}" rel="stylesheet">
@@ -20,14 +24,17 @@
 		</div>
 		<div id="navbar" class="collapse navbar-collapse">
 			<ul class="nav navbar-nav">
-				<li class="active"><a href="#">Home</a></li>
+				<li class="active"><a href="{{ route('home') }}">Home</a></li>
 				<li><a href="#about">Cases</a></li>
 				<li><a href="#contact">Reports</a></li>
+				@if ($canManageUsers())
+				<li><a href="{{ route('users.list') }}">Users</a></li>
+				@endif
 			</ul>
 
 			<div class="nav-profile pull-right" style="line-height: 49px;">
 				<img class="avatar" src="" />
-				<span class="name" style="color: #fefefe;">{{ $user->username }}</span>
+				<span class="name" style="color: #fefefe;">{{ $authUser->username }}</span>
 				<a href="#profile" class="btn btn-success">Profile</a>
 				<a href="{{ route('logout') }}" class="btn btn-danger">Logout</a>
 			</div>
@@ -35,6 +42,8 @@
 		<!--/.nav-collapse -->
 	</div>
 </nav>
+
+@yield('content-messages')
 
 @yield('content-inner')
 

@@ -26,33 +26,28 @@ class HomeController extends BaseController {
 				  ->withErrors($validator) // send back all errors to the login form
 				  ->withInput(\Input::except('password')); // send back the input (not the password) so that we can repopulate the form
 		} else {
+			$rememberInput = (bool) \Input::get('rememberme');
 
-			 // create our user data for the authentication
-			 $userdata = array(
-				  'email'     => \Input::get('username'),
-				  'password'  => \Input::get('password')
-			 );
+			$user = \User::where(function($q) {
+				$q->where('username', '=', \Input::get("username"));
+				$q->orWhere('email', '=', \Input::get('username'));
+			})->first();
 
-			 // create our user data for the authentication
-			 $userdata2 = array(
-				  'username' => \Input::get('username'),
-				  'password' => \Input::get('password')
-			 );
+			if (!$user) {
+				return \Redirect::back()->withErrors(array('Please enter correct username and password.')); 
+			}
 
-			 $rememberInput = (bool) \Input::get('rememberme');
+			if (!$user->is_verified) {
+				return \Redirect::back()->withErrors(array('Your account has not been activated yet. Try again later.')); 
+			}
 
-			 // attempt to do the login
-			 if (\Auth::attempt($userdata, $rememberInput) || \Auth::attempt($userdata2, $rememberInput)) {
+			if (!\Hash::check(\Input::get('password'), $user->password)) {
+				return \Redirect::back()->withErrors(array('Please enter correct username and password.')); 
+			}
 
-				  return \Redirect::to('admin');
+			$result = \Auth::login($user, $rememberInput);
 
-			 } else {
-
-				  // validation not successful, send back to form 
-				  return \Redirect::to('login');
-
-			 }
-
+			return \Redirect::to('admin');
 		}
 	}
 
@@ -78,7 +73,7 @@ class HomeController extends BaseController {
 
 		// if the validator fails, redirect back to the form
 		if ($validator->fails()) {
-			 return \Redirect::to('register')
+			 return \Redirect::back()
 				  ->withErrors($validator) // send back all errors to the login form
 				  ->withInput(\Input::except('password')); // send back the input (not the password) so that we can repopulate the form
 		} else {
@@ -98,12 +93,10 @@ class HomeController extends BaseController {
 					'password' => Hash::make(\Input::get('password'))
 				));
 
-				\Eloquent::guard();
-
 				return \Redirect::to('login')->withSuccess('Thank you for your registration!');
 			} catch (\Exception $ex) {
-				return \Redirect::to('register')
-					->withError($ex->getMessage())
+				return \Redirect::back()
+					->withErrors(array($ex->getMessage()))
 					->withInput(\Input::except('password'));
 			}
 		}

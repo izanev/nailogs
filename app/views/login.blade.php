@@ -1,17 +1,12 @@
-@extends('layouts.base')
+@extends('layouts.front')
 
 @section('headcss')
 	@parent
 	<link href="{{ asset('assets/css/login.css') }}" rel="stylesheet">
 @stop
 
-@section('content')
+@section('content-inner')
 	<div class="container">
-		<!-- if there are login errors, show them here -->
-		@if (count($errors))
-		<div class="alert alert-danger">Please enter correct username and password.</div>
-		@endif
-
 		{{ Form::open(array('url' => 'login', 'class' => 'form-signin', 'method' => 'post')) }}
 			<h2 class="form-signin-heading">Please sign in</h2>
 			{{ Form::label('inputEmail', 'Email Address', ['class' => 'sr-only']) }}

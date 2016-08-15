@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/', array('uses' => 'HomeController@home'));
+Route::get('/', array('as' => 'index', 'uses' => 'HomeController@home'));
 Route::get('login', array('as' => 'login', 'uses' => 'HomeController@showLogin'));
 Route::get('logout', array('as' => 'logout', 'uses' => 'HomeController@doLogout'));
 Route::get('register', array('as' => 'register', 'uses' => 'HomeController@showRegister'));
@@ -21,5 +21,8 @@ Route::post('register', array('as' => 'doRegister', 'uses' => 'HomeController@do
 
 Route::group(['prefix' => 'admin', 'namespace' => 'admin', 'before' => 'auth'], function()
 {
-    Route::resource('/', 'HomeController@home');
+    Route::get('/', array('as' => 'home', 'uses' => 'HomeController@home'));
+	 Route::get('users', array('as' => 'users.list', 'uses' => 'UsersController@showList'));
+	 Route::get('users/verify', array('as' => 'users.verify', 'uses' => 'UsersController@doVerify'));
+
 });

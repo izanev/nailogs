@@ -12,7 +12,8 @@ class UserTableSeeder extends Seeder {
 			'role_id' => $adminRole->id(),
 			'username' => 'admin',
 			'email' => 'admin@admin.balkan',
-			'password' => Hash::make('admin')
+			'password' => Hash::make('admin'),
+			'is_verified' => 1
 		 ));
 	}
 
