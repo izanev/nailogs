@@ -6,6 +6,10 @@
 
 @section('headcss')
 	@parent
+
+	<link href="{{ asset('vendor_assets/css/jquery-ui.css') }}" rel="stylesheet">
+	<link href="{{ asset('vendor_assets/css/jquery-ui.theme.css') }}" rel="stylesheet">
+
 	<link href="{{ asset('assets/css/admin.css') }}" rel="stylesheet">
 @stop
 
@@ -25,7 +29,7 @@
 		<div id="navbar" class="collapse navbar-collapse">
 			<ul class="nav navbar-nav">
 				<li class="active"><a href="{{ route('home') }}">Home</a></li>
-				<li><a href="#about">Cases</a></li>
+				<li><a href="{{ route('cases.list') }}">Cases</a></li>
 				<li><a href="#contact">Reports</a></li>
 				@if ($canManageUsers())
 				<li><a href="{{ route('users.list') }}">Users</a></li>

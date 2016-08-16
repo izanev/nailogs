@@ -1,0 +1,1 @@
+@include('admin.cases.add', array('case' => $case))

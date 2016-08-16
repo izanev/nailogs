@@ -1,0 +1,1 @@
+<a href="{{ route('cases.view', array('case_id' => $case->id)) }}" class="btn btn-success">View Case</a>

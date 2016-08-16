@@ -1,0 +1,1 @@
+<a href="{{ route('cases.add') }}" class="btn btn-success">Add Case</a>

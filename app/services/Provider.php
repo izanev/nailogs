@@ -13,6 +13,7 @@ class Provider extends ServiceProvider {
 				'verify_user',
 				'list_cases',
 				'add_case',
+				'remove_case',
 				'logout'
 			),
 			'user' => array(
@@ -44,9 +45,36 @@ class Provider extends ServiceProvider {
 			$authorize = \App::make('nai.authorizeService');
 
 			\View::share('authUser', \Auth::user());
-			
+
+			\View::share('can', function($perm) use($authorize) {
+				return $authorize->can($perm);
+			});
+
 			\View::share('canManageUsers', function() use($authorize) {
 				return $authorize->can('list_users');
+			});
+
+			\View::share('renderCaseResort', function(\CaseModel $case) {
+				return $case->resort;
+			});
+
+			\View::share('renderDate', function($date) {
+				if (is_object($date)) {
+					return $date->format('Y-m-d');
+				} else {
+					return 'N/A';
+				}
+			});
+
+			\Form::macro('dateValue', function($name) {
+				 // Use Form::getValueAttribute() to get the value
+				 $value = \Form::getValueAttribute($name);
+
+				 if (!is_object($value)) {
+					 return $value;
+				 }
+
+				 return $value->format('Y-m-d');
 			});
 		}
 
